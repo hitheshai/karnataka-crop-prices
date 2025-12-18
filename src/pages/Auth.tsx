@@ -30,7 +30,7 @@ const Auth = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState('login');
+  const [activeTab, setActiveTab] = useState('signup');
 
   // Login form state
   const [loginEmail, setLoginEmail] = useState('');
@@ -180,8 +180,8 @@ const Auth = () => {
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Register</TabsTrigger>
+              <TabsTrigger value="login">Login</TabsTrigger>
             </TabsList>
 
             <TabsContent value="login" className="space-y-4">
