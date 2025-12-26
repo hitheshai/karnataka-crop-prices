@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Header from "@/components/Header";
 import DistrictSelector from "@/components/DistrictSelector";
 import CategoryFilter from "@/components/CategoryFilter";
@@ -6,11 +6,44 @@ import SearchBar from "@/components/SearchBar";
 import CropPriceCard from "@/components/CropPriceCard";
 import StatsBar from "@/components/StatsBar";
 import { crops, priceData, PriceData } from "@/data/karnataka-data";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
+  const { user } = useAuth();
   const [selectedDistrict, setSelectedDistrict] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      if (user) {
+        // First try to get name from user metadata
+        const metaName = user.user_metadata?.full_name || user.user_metadata?.name;
+        if (metaName) {
+          setUserName(metaName);
+          return;
+        }
+        
+        // Otherwise fetch from profiles table
+        const { data } = await supabase
+          .from('profiles')
+          .select('full_name')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (data?.full_name) {
+          setUserName(data.full_name);
+        } else {
+          // Fallback to email prefix
+          setUserName(user.email?.split('@')[0] || null);
+        }
+      }
+    };
+    
+    fetchUserName();
+  }, [user]);
 
   const lastUpdated = new Date().toLocaleDateString('en-IN', {
     day: 'numeric',
@@ -67,6 +100,18 @@ const Index = () => {
       <Header lastUpdated={lastUpdated} />
       
       <main className="container mx-auto px-4 py-6 space-y-6">
+        {/* Welcome Message */}
+        {user && userName && (
+          <div className="bg-primary/10 border border-primary/20 rounded-xl p-4 md:p-6">
+            <h1 className="text-xl md:text-2xl font-display font-semibold text-foreground">
+              🌾 Welcome back, <span className="text-primary">{userName}</span>!
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              Check today's market prices and make informed decisions for your crops.
+            </p>
+          </div>
+        )}
+
         {/* Stats Overview */}
         <StatsBar filteredData={filteredData} />
 
