@@ -1,4 +1,1 @@
 project_id = "vgurjrsibhiwhuaqpnzd"
-
-[functions.get-apmc-prices]
-verify_jwt = false

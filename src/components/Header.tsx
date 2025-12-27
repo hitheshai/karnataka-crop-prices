@@ -1,10 +1,10 @@
-import { Leaf, LogIn, LogOut, User } from "lucide-react";
+import { Leaf, RefreshCw, LogIn, LogOut, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 
 interface HeaderProps {
-  lastUpdated?: string;
+  lastUpdated: string;
 }
 
 const Header = ({ lastUpdated }: HeaderProps) => {
@@ -23,11 +23,15 @@ const Header = ({ lastUpdated }: HeaderProps) => {
                 Karnataka Krishi Mandi
               </h1>
               <p className="text-primary-foreground/80 text-sm md:text-base">
-                Live APMC Prices Across Karnataka
+                Daily Crop Market Prices Across 31 Districts
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 text-sm bg-primary-foreground/10 px-4 py-2 rounded-lg">
+              <RefreshCw className="w-4 h-4 animate-pulse-slow" />
+              <span>Last Updated: {lastUpdated}</span>
+            </div>
             {user ? (
               <div className="flex items-center gap-2">
                 <div className="hidden sm:flex items-center gap-2 text-sm bg-primary-foreground/10 px-3 py-2 rounded-lg">
