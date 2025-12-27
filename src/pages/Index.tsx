@@ -5,12 +5,15 @@ import CategoryFilter from "@/components/CategoryFilter";
 import SearchBar from "@/components/SearchBar";
 import CropPriceCard from "@/components/CropPriceCard";
 import StatsBar from "@/components/StatsBar";
-import { crops, priceData, PriceData } from "@/data/karnataka-data";
+import { crops, PriceData } from "@/data/karnataka-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useAPMCPrices } from "@/hooks/useAPMCPrices";
+import { Loader2 } from "lucide-react";
 
 const Index = () => {
   const { user } = useAuth();
+  const { priceData, loading, error, lastUpdated } = useAPMCPrices();
   const [selectedDistrict, setSelectedDistrict] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,13 +48,15 @@ const Index = () => {
     fetchUserName();
   }, [user]);
 
-  const lastUpdated = new Date().toLocaleDateString('en-IN', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const formattedLastUpdated = lastUpdated 
+    ? new Date(lastUpdated).toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    : null;
 
   const filteredData = useMemo(() => {
     let filtered = priceData;
@@ -97,7 +102,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header lastUpdated={lastUpdated} />
+      <Header />
       
       <main className="container mx-auto px-4 py-6 space-y-6">
         {/* Welcome Message */}
@@ -112,41 +117,60 @@ const Index = () => {
           </div>
         )}
 
+        {/* Loading State */}
+        {loading && (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            <span className="ml-3 text-muted-foreground">Loading live APMC prices...</span>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-4 text-destructive text-sm">
+            Note: Using cached prices. Live data temporarily unavailable.
+          </div>
+        )}
+
         {/* Stats Overview */}
-        <StatsBar filteredData={filteredData} />
+        {!loading && <StatsBar filteredData={filteredData} />}
 
         {/* Filters Section */}
-        <div className="bg-card rounded-xl p-4 md:p-6 shadow-sm border border-border/50 space-y-4">
-          <div className="flex flex-col md:flex-row md:items-end gap-4">
-            <DistrictSelector
-              selectedDistrict={selectedDistrict}
-              onDistrictChange={setSelectedDistrict}
-            />
-            <div className="flex-1">
-              <SearchBar
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
+        {!loading && (
+          <div className="bg-card rounded-xl p-4 md:p-6 shadow-sm border border-border/50 space-y-4">
+            <div className="flex flex-col md:flex-row md:items-end gap-4">
+              <DistrictSelector
+                selectedDistrict={selectedDistrict}
+                onDistrictChange={setSelectedDistrict}
               />
+              <div className="flex-1">
+                <SearchBar
+                  searchQuery={searchQuery}
+                  onSearchChange={setSearchQuery}
+                />
+              </div>
             </div>
+            <CategoryFilter
+              selectedCategory={selectedCategory}
+              onCategoryChange={setSelectedCategory}
+            />
           </div>
-          <CategoryFilter
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-          />
-        </div>
+        )}
 
         {/* Results Header */}
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-display font-semibold text-foreground">
-            {selectedDistrict === "all" ? "All Districts" : selectedDistrict} Prices
-          </h2>
-          <span className="text-sm text-muted-foreground">
-            {filteredData.length} crops found
-          </span>
-        </div>
+        {!loading && (
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-display font-semibold text-foreground">
+              {selectedDistrict === "all" ? "All Districts" : selectedDistrict} Prices
+            </h2>
+            <span className="text-sm text-muted-foreground">
+              {filteredData.length} crops found
+            </span>
+          </div>
+        )}
 
         {/* Price Cards Grid */}
-        {filteredData.length > 0 ? (
+        {!loading && filteredData.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredData.map((item, index) => {
               const crop = getCrop(item.cropId);
@@ -161,18 +185,21 @@ const Index = () => {
               );
             })}
           </div>
-        ) : (
+        ) : !loading ? (
           <div className="text-center py-12">
             <p className="text-muted-foreground">No crops found matching your criteria.</p>
           </div>
-        )}
+        ) : null}
       </main>
 
       {/* Footer */}
       <footer className="bg-muted mt-12 py-6">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           <p>Karnataka Agricultural Market Price Information System</p>
-          <p className="mt-1">Data sourced from APMC markets across Karnataka</p>
+          <p className="mt-1">Live data from Government APMC Markets</p>
+          {formattedLastUpdated && (
+            <p className="mt-1 text-xs">Last updated: {formattedLastUpdated}</p>
+          )}
         </div>
       </footer>
     </div>
