@@ -93,7 +93,7 @@ const Index = () => {
     }
 
     return filtered;
-  }, [selectedDistrict, selectedCategory, searchQuery]);
+  }, [priceData, selectedDistrict, selectedCategory, searchQuery]);
 
   const getCrop = (cropId: string) => crops.find(c => c.id === cropId);
 
