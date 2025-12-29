@@ -1,13 +1,14 @@
-import { Leaf, RefreshCw, LogIn, LogOut, User } from "lucide-react";
+import { Leaf, LogIn, LogOut, User, Clock, Radio } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 
 interface HeaderProps {
   lastUpdated: string;
+  isLive?: boolean;
 }
 
-const Header = ({ lastUpdated }: HeaderProps) => {
+const Header = ({ lastUpdated, isLive = false }: HeaderProps) => {
   const { user, signOut } = useAuth();
 
   return (
@@ -29,8 +30,12 @@ const Header = ({ lastUpdated }: HeaderProps) => {
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 text-sm bg-primary-foreground/10 px-4 py-2 rounded-lg">
-              <RefreshCw className="w-4 h-4 animate-pulse-slow" />
-              <span>Last Updated: {lastUpdated}</span>
+              {isLive ? (
+                <Radio className="w-4 h-4 text-green-400 animate-pulse" />
+              ) : (
+                <Clock className="w-4 h-4" />
+              )}
+              <span>{isLive ? 'Live' : 'Updated'}: {lastUpdated}</span>
             </div>
             {user ? (
               <div className="flex items-center gap-2">
