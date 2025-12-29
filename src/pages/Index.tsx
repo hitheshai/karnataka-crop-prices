@@ -5,12 +5,14 @@ import CategoryFilter from "@/components/CategoryFilter";
 import SearchBar from "@/components/SearchBar";
 import CropPriceCard from "@/components/CropPriceCard";
 import StatsBar from "@/components/StatsBar";
-import { crops, priceData, PriceData } from "@/data/karnataka-data";
+import { crops, PriceData } from "@/data/karnataka-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useAPMCPrices } from "@/hooks/useAPMCPrices";
 
 const Index = () => {
   const { user } = useAuth();
+  const { priceData, loading: pricesLoading, isLiveData, lastUpdated } = useAPMCPrices();
   const [selectedDistrict, setSelectedDistrict] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -45,7 +47,7 @@ const Index = () => {
     fetchUserName();
   }, [user]);
 
-  const lastUpdated = new Date().toLocaleDateString('en-IN', {
+  const formattedLastUpdated = lastUpdated.toLocaleDateString('en-IN', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -97,7 +99,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header lastUpdated={lastUpdated} />
+      <Header lastUpdated={formattedLastUpdated} isLive={isLiveData} />
       
       <main className="container mx-auto px-4 py-6 space-y-6">
         {/* Welcome Message */}

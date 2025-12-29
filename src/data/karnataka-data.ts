@@ -80,56 +80,51 @@ export interface PriceData {
   market: string;
 }
 
-// Generate mock price data
-const generatePriceData = (): PriceData[] => {
+// Fixed fallback price data (used when API is unavailable)
+const generateFixedPriceData = (): PriceData[] => {
   const today = new Date().toISOString().split('T')[0];
   const data: PriceData[] = [];
   
-  const basePrices: Record<string, { min: number; max: number }> = {
-    "1": { min: 2200, max: 2800 },
-    "2": { min: 2400, max: 3000 },
-    "3": { min: 3200, max: 3800 },
-    "4": { min: 2800, max: 3400 },
-    "5": { min: 1800, max: 2400 },
-    "6": { min: 6500, max: 7500 },
-    "7": { min: 5500, max: 6500 },
-    "8": { min: 5000, max: 6000 },
-    "9": { min: 6800, max: 7800 },
-    "10": { min: 320, max: 380 },
-    "11": { min: 1500, max: 3500 },
-    "12": { min: 1200, max: 2800 },
-    "13": { min: 1800, max: 2600 },
-    "14": { min: 2500, max: 4500 },
-    "15": { min: 1800, max: 2800 },
-    "16": { min: 3500, max: 8000 },
-    "17": { min: 22000, max: 28000 },
-    "18": { min: 42000, max: 48000 },
-    "19": { min: 18000, max: 24000 },
-    "20": { min: 45000, max: 55000 },
-    "21": { min: 1200, max: 1800 },
-    "22": { min: 12000, max: 16000 },
-    "23": { min: 5500, max: 6500 },
-    "24": { min: 7500, max: 8500 },
-    "25": { min: 4500, max: 5500 },
+  // Fixed base prices per quintal (in INR) - realistic Karnataka APMC prices
+  const fixedPrices: Record<string, { min: number; max: number; modal: number; prev: number }> = {
+    "1": { min: 2250, max: 2750, modal: 2500, prev: 2480 },    // Rice (Paddy)
+    "2": { min: 2450, max: 2950, modal: 2700, prev: 2720 },    // Wheat
+    "3": { min: 3350, max: 3750, modal: 3550, prev: 3500 },    // Ragi
+    "4": { min: 2950, max: 3350, modal: 3150, prev: 3100 },    // Jowar
+    "5": { min: 1950, max: 2350, modal: 2150, prev: 2180 },    // Maize
+    "6": { min: 6750, max: 7350, modal: 7050, prev: 6950 },    // Tur
+    "7": { min: 5750, max: 6350, modal: 6050, prev: 5980 },    // Groundnut
+    "8": { min: 5250, max: 5850, modal: 5550, prev: 5600 },    // Sunflower
+    "9": { min: 7050, max: 7650, modal: 7350, prev: 7280 },    // Cotton
+    "10": { min: 340, max: 370, modal: 355, prev: 350 },       // Sugarcane
+    "11": { min: 1800, max: 3200, modal: 2500, prev: 2650 },   // Tomato
+    "12": { min: 1450, max: 2550, modal: 2000, prev: 1850 },   // Onion
+    "13": { min: 2050, max: 2450, modal: 2250, prev: 2200 },   // Potato
+    "14": { min: 2850, max: 4250, modal: 3550, prev: 3700 },   // Green Chilli
+    "15": { min: 2050, max: 2650, modal: 2350, prev: 2300 },   // Banana
+    "16": { min: 4250, max: 7250, modal: 5750, prev: 5500 },   // Mango
+    "17": { min: 23500, max: 27500, modal: 25500, prev: 25000 }, // Coconut
+    "18": { min: 43500, max: 47500, modal: 45500, prev: 44800 }, // Arecanut
+    "19": { min: 19500, max: 23500, modal: 21500, prev: 21000 }, // Coffee
+    "20": { min: 47500, max: 53500, modal: 50500, prev: 49500 }, // Black Pepper
+    "21": { min: 1350, max: 1650, modal: 1500, prev: 1480 },   // Cardamom
+    "22": { min: 13500, max: 15500, modal: 14500, prev: 14200 }, // Turmeric
+    "23": { min: 5750, max: 6350, modal: 6050, prev: 5980 },   // Bengal Gram
+    "24": { min: 7750, max: 8350, modal: 8050, prev: 7950 },   // Green Gram
+    "25": { min: 4750, max: 5350, modal: 5050, prev: 4980 },   // Soybean
   };
 
   karnatakaDistricts.forEach(district => {
     crops.forEach(crop => {
-      const base = basePrices[crop.id] || { min: 2000, max: 3000 };
-      const variation = Math.random() * 0.2 - 0.1;
-      const minPrice = Math.round(base.min * (1 + variation));
-      const maxPrice = Math.round(base.max * (1 + variation));
-      const modalPrice = Math.round((minPrice + maxPrice) / 2);
-      const prevVariation = Math.random() * 0.1 - 0.05;
-      const previousPrice = Math.round(modalPrice * (1 + prevVariation));
+      const prices = fixedPrices[crop.id] || { min: 2500, max: 3000, modal: 2750, prev: 2700 };
 
       data.push({
         cropId: crop.id,
         district,
-        minPrice,
-        maxPrice,
-        modalPrice,
-        previousPrice,
+        minPrice: prices.min,
+        maxPrice: prices.max,
+        modalPrice: prices.modal,
+        previousPrice: prices.prev,
         date: today,
         market: `${district} APMC`
       });
@@ -139,6 +134,6 @@ const generatePriceData = (): PriceData[] => {
   return data;
 };
 
-export const priceData = generatePriceData();
+export const priceData = generateFixedPriceData();
 
 export const categories = [...new Set(crops.map(c => c.category))];
