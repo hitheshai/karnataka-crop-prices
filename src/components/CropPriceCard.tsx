@@ -10,8 +10,9 @@ interface CropPriceCardProps {
 }
 
 const CropPriceCard = ({ crop, priceData, index }: CropPriceCardProps) => {
-  const priceChange = priceData.modalPrice - priceData.previousPrice;
-  const percentChange = ((priceChange / priceData.previousPrice) * 100).toFixed(1);
+  const previous = priceData.previousPrice || priceData.modalPrice;
+  const priceChange = priceData.modalPrice - previous;
+  const percentChange = previous > 0 ? ((priceChange / previous) * 100).toFixed(1) : "0.0";
   const isUp = priceChange > 0;
   const isDown = priceChange < 0;
   const isStable = priceChange === 0;
