@@ -5,6 +5,7 @@ import CategoryFilter from "@/components/CategoryFilter";
 import SearchBar from "@/components/SearchBar";
 import CropPriceCard from "@/components/CropPriceCard";
 import StatsBar from "@/components/StatsBar";
+import ScrollToTop from "@/components/ScrollToTop";
 import { crops, PriceData } from "@/data/karnataka-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -98,8 +99,9 @@ const Index = () => {
   const getCrop = (cropId: string) => crops.find(c => c.id === cropId);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overscroll-none">
       <Header lastUpdated={formattedLastUpdated} isLive={isLiveData} />
+      <ScrollToTop />
       
       <main className="container mx-auto px-4 py-6 space-y-6">
         {/* Welcome Message */}
