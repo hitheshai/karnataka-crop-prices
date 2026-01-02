@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import DistrictSelector from "@/components/DistrictSelector";
 import CategoryFilter from "@/components/CategoryFilter";
@@ -12,12 +13,29 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAPMCPrices } from "@/hooks/useAPMCPrices";
 
 const Index = () => {
-  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+
+  // Redirect to auth page if not logged in
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate('/auth');
+    }
+  }, [user, authLoading, navigate]);
   const { priceData, loading: pricesLoading, isLiveData, lastUpdated } = useAPMCPrices();
   const [selectedDistrict, setSelectedDistrict] = useState("all");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [userName, setUserName] = useState<string | null>(null);
+
+  // Show loading while checking auth
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-primary">Loading...</div>
+      </div>
+    );
+  }
 
   useEffect(() => {
     const fetchUserName = async () => {
