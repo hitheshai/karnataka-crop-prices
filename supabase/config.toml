@@ -1,4 +1,10 @@
 project_id = "vgurjrsibhiwhuaqpnzd"
 
+[functions.send-otp]
+verify_jwt = false
+
+[functions.verify-otp]
+verify_jwt = false
+
 [functions.fetch-apmc-prices]
 verify_jwt = false
