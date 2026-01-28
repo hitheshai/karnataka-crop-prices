@@ -6,6 +6,7 @@ import SearchBar from "@/components/SearchBar";
 import CropPriceCard from "@/components/CropPriceCard";
 import StatsBar from "@/components/StatsBar";
 import ScrollToTop from "@/components/ScrollToTop";
+import LoginStats from "@/components/LoginStats";
 import { crops, PriceData } from "@/data/karnataka-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -115,6 +116,9 @@ const Index = () => {
             </p>
           </div>
         )}
+
+        {/* Login Stats - Only for logged in users */}
+        <LoginStats />
 
         {/* Stats Overview */}
         <StatsBar filteredData={filteredData} />
