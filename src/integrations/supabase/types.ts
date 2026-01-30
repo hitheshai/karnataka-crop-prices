@@ -14,6 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      price_history: {
+        Row: {
+          crop_id: string
+          district: string
+          id: string
+          modal_price: number
+          recorded_at: string | null
+        }
+        Insert: {
+          crop_id: string
+          district: string
+          id?: string
+          modal_price: number
+          recorded_at?: string | null
+        }
+        Update: {
+          crop_id?: string
+          district?: string
+          id?: string
+          modal_price?: number
+          recorded_at?: string | null
+        }
+        Relationships: []
+      }
+      price_notifications: {
+        Row: {
+          created_at: string | null
+          crop_id: string
+          crop_name: string
+          district: string
+          id: string
+          is_read: boolean | null
+          new_price: number
+          old_price: number
+          price_change_percent: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          crop_id: string
+          crop_name: string
+          district: string
+          id?: string
+          is_read?: boolean | null
+          new_price: number
+          old_price: number
+          price_change_percent: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          crop_id?: string
+          crop_name?: string
+          district?: string
+          id?: string
+          is_read?: boolean | null
+          new_price?: number
+          old_price?: number
+          price_change_percent?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
