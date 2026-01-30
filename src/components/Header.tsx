@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { PriceNotifications } from "@/components/PriceNotifications";
+import { NotificationSettings } from "@/components/NotificationSettings";
 
 interface HeaderProps {
   lastUpdated: string;
@@ -40,6 +41,7 @@ const Header = ({ lastUpdated, isLive = false }: HeaderProps) => {
             </div>
             {user ? (
               <div className="flex items-center gap-2">
+                <NotificationSettings />
                 <PriceNotifications />
                 <div className="hidden sm:flex items-center gap-2 text-sm bg-primary-foreground/10 px-3 py-2 rounded-lg">
                   <User className="w-4 h-4" />

@@ -2,3 +2,6 @@ project_id = "vgurjrsibhiwhuaqpnzd"
 
 [functions.fetch-apmc-prices]
 verify_jwt = false
+
+[functions.send-price-alert]
+verify_jwt = false

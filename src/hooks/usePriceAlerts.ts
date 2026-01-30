@@ -86,6 +86,30 @@ export const usePriceAlerts = (priceData: PriceData[]) => {
               description: 'Check the bell icon for details',
             }
           );
+
+          // Trigger external notifications (SMS/Email)
+          const alertsForExternal = notifications.map(n => ({
+            userId: user.id,
+            cropName: n.crop_name,
+            cropEmoji: crops.find(c => c.id === n.crop_id)?.image || '🌾',
+            district: n.district,
+            oldPrice: n.old_price,
+            newPrice: n.new_price,
+            changePercent: n.price_change_percent,
+          }));
+
+          // Send external notifications in background
+          supabase.functions
+            .invoke('send-price-alert', {
+              body: { alerts: alertsForExternal },
+            })
+            .then(({ error: alertError }) => {
+              if (alertError) {
+                console.error('Error sending external alerts:', alertError);
+              } else {
+                console.log('External price alerts sent successfully');
+              }
+            });
         }
       }
     };
