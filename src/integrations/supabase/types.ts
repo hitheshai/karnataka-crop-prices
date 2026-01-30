@@ -85,12 +85,16 @@ export type Database = {
           avatar_url: string | null
           created_at: string
           district: string | null
+          email_notifications_enabled: boolean | null
           farm_size_acres: number | null
           full_name: string | null
           id: string
           main_crops: string[] | null
+          notification_email: string | null
           phone: string | null
+          price_alert_threshold: number | null
           registration_number: string | null
+          sms_notifications_enabled: boolean | null
           updated_at: string
           user_id: string
           village: string | null
@@ -99,12 +103,16 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           district?: string | null
+          email_notifications_enabled?: boolean | null
           farm_size_acres?: number | null
           full_name?: string | null
           id?: string
           main_crops?: string[] | null
+          notification_email?: string | null
           phone?: string | null
+          price_alert_threshold?: number | null
           registration_number?: string | null
+          sms_notifications_enabled?: boolean | null
           updated_at?: string
           user_id: string
           village?: string | null
@@ -113,12 +121,16 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           district?: string | null
+          email_notifications_enabled?: boolean | null
           farm_size_acres?: number | null
           full_name?: string | null
           id?: string
           main_crops?: string[] | null
+          notification_email?: string | null
           phone?: string | null
+          price_alert_threshold?: number | null
           registration_number?: string | null
+          sms_notifications_enabled?: boolean | null
           updated_at?: string
           user_id?: string
           village?: string | null
