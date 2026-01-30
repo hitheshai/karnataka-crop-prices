@@ -11,6 +11,7 @@ import { crops, PriceData } from "@/data/karnataka-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAPMCPrices } from "@/hooks/useAPMCPrices";
+import { usePriceAlerts } from "@/hooks/usePriceAlerts";
 
 const Index = () => {
   const { user } = useAuth();
@@ -19,6 +20,9 @@ const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [userName, setUserName] = useState<string | null>(null);
+  
+  // Check for price alerts
+  usePriceAlerts(priceData);
 
   useEffect(() => {
     const fetchUserName = async () => {
