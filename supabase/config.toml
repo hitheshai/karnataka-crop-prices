@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.send-price-alert]
 verify_jwt = false
+
+[functions.get-login-stats]
+verify_jwt = false
