@@ -67,6 +67,28 @@ export const crops: Crop[] = [
   { id: "23", name: "Bengal Gram", localName: "ಕಡಲೆ", category: "Pulses", unit: "Quintal", image: "🫘" },
   { id: "24", name: "Green Gram", localName: "ಹೆಸರು", category: "Pulses", unit: "Quintal", image: "🫛" },
   { id: "25", name: "Soybean", localName: "ಸೋಯಾಬೀನ್", category: "Oilseeds", unit: "Quintal", image: "🫘" },
+  // New Fruits
+  { id: "26", name: "Papaya", localName: "ಪಪ್ಪಾಯಿ", category: "Fruits", unit: "Quintal", image: "🍈" },
+  { id: "27", name: "Guava", localName: "ಸೀಬೆ", category: "Fruits", unit: "Quintal", image: "🍐" },
+  { id: "28", name: "Pomegranate", localName: "ದಾಳಿಂಬೆ", category: "Fruits", unit: "Quintal", image: "🍎" },
+  { id: "29", name: "Watermelon", localName: "ಕಲ್ಲಂಗಡಿ", category: "Fruits", unit: "Quintal", image: "🍉" },
+  { id: "30", name: "Sapota (Chikoo)", localName: "ಸಪೋಟ", category: "Fruits", unit: "Quintal", image: "🟤" },
+  { id: "31", name: "Grapes", localName: "ದ್ರಾಕ್ಷಿ", category: "Fruits", unit: "Quintal", image: "🍇" },
+  { id: "32", name: "Jackfruit", localName: "ಹಲಸು", category: "Fruits", unit: "Quintal", image: "🟡" },
+  { id: "33", name: "Orange", localName: "ಕಿತ್ತಳೆ", category: "Fruits", unit: "Quintal", image: "🍊" },
+  { id: "34", name: "Pineapple", localName: "ಅನಾನಸ್", category: "Fruits", unit: "Quintal", image: "🍍" },
+  { id: "35", name: "Lime", localName: "ನಿಂಬೆ", category: "Fruits", unit: "Quintal", image: "🍋" },
+  // New Vegetables
+  { id: "36", name: "Brinjal", localName: "ಬದನೆಕಾಯಿ", category: "Vegetables", unit: "Quintal", image: "🍆" },
+  { id: "37", name: "Okra (Lady's Finger)", localName: "ಬೆಂಡೆಕಾಯಿ", category: "Vegetables", unit: "Quintal", image: "🌿" },
+  { id: "38", name: "Bitter Gourd", localName: "ಹಾಗಲಕಾಯಿ", category: "Vegetables", unit: "Quintal", image: "🥒" },
+  { id: "39", name: "Ridge Gourd", localName: "ಹೀರೆಕಾಯಿ", category: "Vegetables", unit: "Quintal", image: "🥬" },
+  { id: "40", name: "Bottle Gourd", localName: "ಸೋರೆಕಾಯಿ", category: "Vegetables", unit: "Quintal", image: "🫑" },
+  { id: "41", name: "Capsicum", localName: "ದೊಡ್ಡ ಮೆಣಸು", category: "Vegetables", unit: "Quintal", image: "🫑" },
+  { id: "42", name: "Cauliflower", localName: "ಹೂಕೋಸು", category: "Vegetables", unit: "Quintal", image: "🥦" },
+  { id: "43", name: "Cabbage", localName: "ಎಲೆಕೋಸು", category: "Vegetables", unit: "Quintal", image: "🥬" },
+  { id: "44", name: "Carrot", localName: "ಗಾಜರು", category: "Vegetables", unit: "Quintal", image: "🥕" },
+  { id: "45", name: "Drumstick", localName: "ನುಗ್ಗೆಕಾಯಿ", category: "Vegetables", unit: "Quintal", image: "🌱" },
 ];
 
 export interface PriceData {
@@ -112,6 +134,28 @@ const generateFixedPriceData = (): PriceData[] => {
     "23": { min: 5750, max: 6350, modal: 6050, prev: 5980 },   // Bengal Gram
     "24": { min: 7750, max: 8350, modal: 8050, prev: 7950 },   // Green Gram
     "25": { min: 4750, max: 5350, modal: 5050, prev: 4980 },   // Soybean
+    // New Fruits
+    "26": { min: 1200, max: 2200, modal: 1700, prev: 1650 },   // Papaya
+    "27": { min: 1500, max: 2500, modal: 2000, prev: 1950 },   // Guava
+    "28": { min: 4500, max: 7500, modal: 6000, prev: 5800 },   // Pomegranate
+    "29": { min: 800, max: 1800, modal: 1300, prev: 1250 },    // Watermelon
+    "30": { min: 2000, max: 3500, modal: 2750, prev: 2700 },   // Sapota
+    "31": { min: 3500, max: 6500, modal: 5000, prev: 4800 },   // Grapes
+    "32": { min: 1500, max: 3000, modal: 2250, prev: 2200 },   // Jackfruit
+    "33": { min: 2500, max: 4500, modal: 3500, prev: 3400 },   // Orange
+    "34": { min: 2000, max: 3500, modal: 2750, prev: 2700 },   // Pineapple
+    "35": { min: 3000, max: 6000, modal: 4500, prev: 4300 },   // Lime
+    // New Vegetables
+    "36": { min: 1000, max: 2500, modal: 1750, prev: 1700 },   // Brinjal
+    "37": { min: 1500, max: 3000, modal: 2250, prev: 2200 },   // Okra
+    "38": { min: 1200, max: 2800, modal: 2000, prev: 1950 },   // Bitter Gourd
+    "39": { min: 800, max: 1800, modal: 1300, prev: 1250 },    // Ridge Gourd
+    "40": { min: 600, max: 1500, modal: 1050, prev: 1000 },    // Bottle Gourd
+    "41": { min: 2000, max: 4500, modal: 3250, prev: 3100 },   // Capsicum
+    "42": { min: 1500, max: 3000, modal: 2250, prev: 2200 },   // Cauliflower
+    "43": { min: 800, max: 2000, modal: 1400, prev: 1350 },    // Cabbage
+    "44": { min: 1500, max: 3000, modal: 2250, prev: 2200 },   // Carrot
+    "45": { min: 2000, max: 4000, modal: 3000, prev: 2900 },   // Drumstick
   };
 
   karnatakaDistricts.forEach(district => {

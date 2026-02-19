@@ -45,6 +45,26 @@ const fixedAPMCPrices: Record<string, { min: number; max: number; modal: number 
   "23": { min: 5500, max: 7000, modal: 6200 },  // Bengal Gram
   "24": { min: 7500, max: 9000, modal: 8200 },  // Green Gram
   "25": { min: 4500, max: 5500, modal: 5000 },  // Soyabean
+  "26": { min: 1200, max: 2200, modal: 1700 },  // Papaya
+  "27": { min: 1500, max: 2500, modal: 2000 },  // Guava
+  "28": { min: 4500, max: 7500, modal: 6000 },  // Pomegranate
+  "29": { min: 800, max: 1800, modal: 1300 },   // Watermelon
+  "30": { min: 2000, max: 3500, modal: 2750 },  // Sapota
+  "31": { min: 3500, max: 6500, modal: 5000 },  // Grapes
+  "32": { min: 1500, max: 3000, modal: 2250 },  // Jackfruit
+  "33": { min: 2500, max: 4500, modal: 3500 },  // Orange
+  "34": { min: 2000, max: 3500, modal: 2750 },  // Pineapple
+  "35": { min: 3000, max: 6000, modal: 4500 },  // Lime
+  "36": { min: 1000, max: 2500, modal: 1750 },  // Brinjal
+  "37": { min: 1500, max: 3000, modal: 2250 },  // Okra
+  "38": { min: 1200, max: 2800, modal: 2000 },  // Bitter Gourd
+  "39": { min: 800, max: 1800, modal: 1300 },   // Ridge Gourd
+  "40": { min: 600, max: 1500, modal: 1050 },   // Bottle Gourd
+  "41": { min: 2000, max: 4500, modal: 3250 },  // Capsicum
+  "42": { min: 1500, max: 3000, modal: 2250 },  // Cauliflower
+  "43": { min: 800, max: 2000, modal: 1400 },   // Cabbage
+  "44": { min: 1500, max: 3000, modal: 2250 },  // Carrot
+  "45": { min: 2000, max: 4000, modal: 3000 },  // Drumstick
 };
 
 const cropNames: Record<string, string> = {
@@ -73,6 +93,26 @@ const cropNames: Record<string, string> = {
   "23": "Bengal Gram",
   "24": "Green Gram",
   "25": "Soyabean",
+  "26": "Papaya",
+  "27": "Guava",
+  "28": "Pomegranate",
+  "29": "Watermelon",
+  "30": "Sapota (Chikoo)",
+  "31": "Grapes",
+  "32": "Jackfruit",
+  "33": "Orange",
+  "34": "Pineapple",
+  "35": "Lime",
+  "36": "Brinjal",
+  "37": "Okra (Lady's Finger)",
+  "38": "Bitter Gourd",
+  "39": "Ridge Gourd",
+  "40": "Bottle Gourd",
+  "41": "Capsicum",
+  "42": "Cauliflower",
+  "43": "Cabbage",
+  "44": "Carrot",
+  "45": "Drumstick",
 };
 
 const karnatakaDistricts = [
