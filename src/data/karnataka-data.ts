@@ -89,6 +89,17 @@ export const crops: Crop[] = [
   { id: "43", name: "Cabbage", localName: "ಎಲೆಕೋಸು", category: "Vegetables", unit: "Quintal", image: "🥬" },
   { id: "44", name: "Carrot", localName: "ಗಾಜರು", category: "Vegetables", unit: "Quintal", image: "🥕" },
   { id: "45", name: "Drumstick", localName: "ನುಗ್ಗೆಕಾಯಿ", category: "Vegetables", unit: "Quintal", image: "🌱" },
+  // New Spices
+  { id: "46", name: "Coriander", localName: "ಕೊತ್ತಂಬರಿ", category: "Spices", unit: "Quintal", image: "🌿" },
+  { id: "47", name: "Cumin (Jeera)", localName: "ಜೀರಿಗೆ", category: "Spices", unit: "Quintal", image: "🌾" },
+  { id: "48", name: "Fenugreek (Methi)", localName: "ಮೆಂತ್ಯ", category: "Spices", unit: "Quintal", image: "🟤" },
+  { id: "49", name: "Mustard", localName: "ಸಾಸಿವೆ", category: "Spices", unit: "Quintal", image: "🟡" },
+  { id: "50", name: "Ginger", localName: "ಶುಂಠಿ", category: "Spices", unit: "Quintal", image: "🫚" },
+  { id: "51", name: "Garlic", localName: "ಬೆಳ್ಳುಳ್ಳಿ", category: "Spices", unit: "Quintal", image: "🧄" },
+  { id: "52", name: "Dry Chilli", localName: "ಒಣ ಮೆಣಸು", category: "Spices", unit: "Quintal", image: "🌶️" },
+  { id: "53", name: "Tamarind", localName: "ಹುಣಸೆ", category: "Spices", unit: "Quintal", image: "🟫" },
+  { id: "54", name: "Asafoetida (Hing)", localName: "ಇಂಗು", category: "Spices", unit: "Kg", image: "⚪" },
+  { id: "55", name: "Sesame (Til)", localName: "ಎಳ್ಳು", category: "Spices", unit: "Quintal", image: "⚪" },
 ];
 
 export interface PriceData {
@@ -156,6 +167,17 @@ const generateFixedPriceData = (): PriceData[] => {
     "43": { min: 800, max: 2000, modal: 1400, prev: 1350 },    // Cabbage
     "44": { min: 1500, max: 3000, modal: 2250, prev: 2200 },   // Carrot
     "45": { min: 2000, max: 4000, modal: 3000, prev: 2900 },   // Drumstick
+    // New Spices
+    "46": { min: 5500, max: 8500, modal: 7000, prev: 6800 },   // Coriander
+    "47": { min: 12000, max: 18000, modal: 15000, prev: 14500 }, // Cumin
+    "48": { min: 4500, max: 7000, modal: 5750, prev: 5600 },   // Fenugreek
+    "49": { min: 4000, max: 6000, modal: 5000, prev: 4900 },   // Mustard
+    "50": { min: 6000, max: 10000, modal: 8000, prev: 7800 },  // Ginger
+    "51": { min: 8000, max: 14000, modal: 11000, prev: 10500 }, // Garlic
+    "52": { min: 8000, max: 14000, modal: 11000, prev: 10800 }, // Dry Chilli
+    "53": { min: 5000, max: 8000, modal: 6500, prev: 6300 },   // Tamarind
+    "54": { min: 250000, max: 350000, modal: 300000, prev: 295000 }, // Asafoetida
+    "55": { min: 9000, max: 13000, modal: 11000, prev: 10700 }, // Sesame
   };
 
   karnatakaDistricts.forEach(district => {

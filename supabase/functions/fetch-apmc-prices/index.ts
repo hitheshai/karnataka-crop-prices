@@ -65,6 +65,16 @@ const fixedAPMCPrices: Record<string, { min: number; max: number; modal: number 
   "43": { min: 800, max: 2000, modal: 1400 },   // Cabbage
   "44": { min: 1500, max: 3000, modal: 2250 },  // Carrot
   "45": { min: 2000, max: 4000, modal: 3000 },  // Drumstick
+  "46": { min: 5500, max: 8500, modal: 7000 },  // Coriander
+  "47": { min: 12000, max: 18000, modal: 15000 }, // Cumin
+  "48": { min: 4500, max: 7000, modal: 5750 },  // Fenugreek
+  "49": { min: 4000, max: 6000, modal: 5000 },  // Mustard
+  "50": { min: 6000, max: 10000, modal: 8000 }, // Ginger
+  "51": { min: 8000, max: 14000, modal: 11000 }, // Garlic
+  "52": { min: 8000, max: 14000, modal: 11000 }, // Dry Chilli
+  "53": { min: 5000, max: 8000, modal: 6500 },  // Tamarind
+  "54": { min: 250000, max: 350000, modal: 300000 }, // Asafoetida
+  "55": { min: 9000, max: 13000, modal: 11000 }, // Sesame
 };
 
 const cropNames: Record<string, string> = {
@@ -113,6 +123,16 @@ const cropNames: Record<string, string> = {
   "43": "Cabbage",
   "44": "Carrot",
   "45": "Drumstick",
+  "46": "Coriander",
+  "47": "Cumin (Jeera)",
+  "48": "Fenugreek (Methi)",
+  "49": "Mustard",
+  "50": "Ginger",
+  "51": "Garlic",
+  "52": "Dry Chilli",
+  "53": "Tamarind",
+  "54": "Asafoetida (Hing)",
+  "55": "Sesame (Til)",
 };
 
 const karnatakaDistricts = [
