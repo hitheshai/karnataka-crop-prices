@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      crop_listings: {
+        Row: {
+          created_at: string
+          crop_category: string
+          crop_name: string
+          description: string | null
+          expected_price_per_quintal: number
+          farmer_district: string
+          farmer_id: string
+          farmer_name: string
+          farmer_phone: string | null
+          farmer_village: string | null
+          id: string
+          is_available: boolean
+          quantity_quintals: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          crop_category?: string
+          crop_name: string
+          description?: string | null
+          expected_price_per_quintal: number
+          farmer_district: string
+          farmer_id: string
+          farmer_name: string
+          farmer_phone?: string | null
+          farmer_village?: string | null
+          id?: string
+          is_available?: boolean
+          quantity_quintals: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          crop_category?: string
+          crop_name?: string
+          description?: string | null
+          expected_price_per_quintal?: number
+          farmer_district?: string
+          farmer_id?: string
+          farmer_name?: string
+          farmer_phone?: string | null
+          farmer_village?: string | null
+          id?: string
+          is_available?: boolean
+          quantity_quintals?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       price_history: {
         Row: {
           crop_id: string
@@ -136,6 +187,59 @@ export type Database = {
           village?: string | null
         }
         Relationships: []
+      }
+      purchase_requests: {
+        Row: {
+          buyer_email: string | null
+          buyer_id: string
+          buyer_name: string
+          buyer_phone: string | null
+          created_at: string
+          id: string
+          listing_id: string
+          message: string | null
+          offered_price_per_quintal: number
+          quantity_quintals: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          buyer_email?: string | null
+          buyer_id: string
+          buyer_name: string
+          buyer_phone?: string | null
+          created_at?: string
+          id?: string
+          listing_id: string
+          message?: string | null
+          offered_price_per_quintal: number
+          quantity_quintals: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          buyer_email?: string | null
+          buyer_id?: string
+          buyer_name?: string
+          buyer_phone?: string | null
+          created_at?: string
+          id?: string
+          listing_id?: string
+          message?: string | null
+          offered_price_per_quintal?: number
+          quantity_quintals?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchase_requests_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "crop_listings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
