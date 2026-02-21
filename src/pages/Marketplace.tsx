@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Leaf, Plus, Search, ShoppingCart, MapPin, Phone, ArrowLeft, Package, IndianRupee, User, MessageSquare } from "lucide-react";
+import { karnatakaDistricts } from "@/data/karnataka-data";
 import ScrollToTop from "@/components/ScrollToTop";
 
 interface CropListing {
@@ -102,8 +103,8 @@ const Marketplace = () => {
     return matchSearch && matchCategory && matchDistrict;
   });
 
-  const categories = [...new Set(listings.map((l) => l.crop_category))];
-  const districts = [...new Set(listings.map((l) => l.farmer_district))].sort();
+  const categories = ["Grains", "Pulses", "Oilseeds", "Cash Crops", "Fruits", "Vegetables", "Spices", "Other"];
+  const districts = karnatakaDistricts;
 
   const formatPrice = (price: number) => `₹${price.toLocaleString("en-IN")}`;
 
