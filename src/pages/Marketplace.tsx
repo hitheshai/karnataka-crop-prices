@@ -238,7 +238,7 @@ const Marketplace = () => {
                   {user && user.id !== listing.farmer_id ? (
                     <Dialog open={selectedListing?.id === listing.id} onOpenChange={(open) => !open && setSelectedListing(null)}>
                       <DialogTrigger asChild>
-                        <Button className="w-full gap-2" onClick={() => { setSelectedListing(listing); setOfferedPrice(String(listing.expected_price_per_quintal)); }}>
+                        <Button className="w-full gap-2" onClick={() => { setSelectedListing(listing); setOfferedPrice(String(priceFor(listing))); }}>
                           <ShoppingCart className="w-4 h-4" /> Send Purchase Request
                         </Button>
                       </DialogTrigger>
