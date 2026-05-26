@@ -33,11 +33,22 @@ interface CropListing {
 const Marketplace = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { priceData } = useAPMCPrices();
   const [listings, setListings] = useState<CropListing[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [districtFilter, setDistrictFilter] = useState("all");
+
+  // Resolve current mandi price for a listing (live, district-uniform)
+  const getMandiPrice = (cropName: string, district: string): number | null => {
+    const crop = crops.find((c) => c.name === cropName);
+    if (!crop) return null;
+    const entry = priceData.find((p) => p.cropId === crop.id && p.district === district);
+    return entry?.modalPrice ?? null;
+  };
+  const priceFor = (l: CropListing) =>
+    getMandiPrice(l.crop_name, l.farmer_district) ?? l.expected_price_per_quintal;
 
   // Purchase dialog state
   const [selectedListing, setSelectedListing] = useState<CropListing | null>(null);
