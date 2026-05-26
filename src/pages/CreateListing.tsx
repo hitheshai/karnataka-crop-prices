@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -8,10 +8,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { karnatakaDistricts } from "@/data/karnataka-data";
-import { ArrowLeft, Leaf } from "lucide-react";
+import { karnatakaDistricts, crops, priceData } from "@/data/karnataka-data";
+import { ArrowLeft, Leaf, IndianRupee } from "lucide-react";
 
-const categories = ["Grains", "Pulses", "Oilseeds", "Cash Crops", "Fruits", "Vegetables", "Spices", "Other"];
+// Map crop categories to marketplace listing categories
+const mapCategory = (cat: string): string => {
+  if (cat === "Cereals" || cat === "Millets") return "Grains";
+  if (cat === "Plantation") return "Cash Crops";
+  if (["Pulses", "Oilseeds", "Cash Crops", "Fruits", "Vegetables", "Spices"].includes(cat)) return cat;
+  return "Other";
+};
 
 const CreateListing = () => {
   const { user } = useAuth();
@@ -20,10 +26,8 @@ const CreateListing = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const [form, setForm] = useState({
-    cropName: "",
-    category: "",
+    cropId: "",
     quantity: "",
-    price: "",
     farmerName: "",
     phone: "",
     district: "",
@@ -33,10 +37,19 @@ const CreateListing = () => {
 
   const update = (key: string, value: string) => setForm((f) => ({ ...f, [key]: value }));
 
+  const selectedCrop = useMemo(() => crops.find((c) => c.id === form.cropId), [form.cropId]);
+
+  // Auto-derived mandi price (modal) for selected crop + district
+  const mandiPrice = useMemo(() => {
+    if (!form.cropId || !form.district) return null;
+    const entry = priceData.find((p) => p.cropId === form.cropId && p.district === form.district);
+    return entry?.modalPrice ?? null;
+  }, [form.cropId, form.district]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) { navigate("/auth"); return; }
-    if (!form.cropName || !form.category || !form.quantity || !form.price || !form.farmerName || !form.district) {
+    if (!selectedCrop || !form.quantity || !form.farmerName || !form.district || mandiPrice == null) {
       toast({ title: "Please fill all required fields", variant: "destructive" });
       return;
     }
@@ -48,10 +61,10 @@ const CreateListing = () => {
       farmer_phone: form.phone.trim() || null,
       farmer_district: form.district,
       farmer_village: form.village.trim() || null,
-      crop_name: form.cropName.trim(),
-      crop_category: form.category,
+      crop_name: selectedCrop.name,
+      crop_category: mapCategory(selectedCrop.category),
       quantity_quintals: parseFloat(form.quantity),
-      expected_price_per_quintal: parseFloat(form.price),
+      expected_price_per_quintal: mandiPrice,
       description: form.description.trim() || null,
     });
     setSubmitting(false);
@@ -88,7 +101,7 @@ const CreateListing = () => {
             </Button>
             <div>
               <h1 className="text-2xl font-display font-bold">Sell Your Crop</h1>
-              <p className="text-primary-foreground/80 text-sm">List your produce for buyers across Karnataka</p>
+              <p className="text-primary-foreground/80 text-sm">Price is auto-set from Karnataka Krishi Mandi rates</p>
             </div>
           </div>
         </div>
@@ -102,27 +115,62 @@ const CreateListing = () => {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Crop Name *</label>
-                  <Input value={form.cropName} onChange={(e) => update("cropName", e.target.value)} placeholder="e.g. Ragi, Tomato, Turmeric" />
+                <div className="space-y-2 md:col-span-2">
+                  <label className="text-sm font-medium">Crop *</label>
+                  <Select value={form.cropId} onValueChange={(v) => update("cropId", v)}>
+                    <SelectTrigger><SelectValue placeholder="Select your crop" /></SelectTrigger>
+                    <SelectContent className="max-h-72">
+                      {crops.map((c) => (
+                        <SelectItem key={c.id} value={c.id}>
+                          {c.image} {c.name} <span className="text-muted-foreground">— {c.localName}</span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {selectedCrop && (
+                    <p className="text-xs text-muted-foreground">
+                      Category: <strong>{mapCategory(selectedCrop.category)}</strong> · Unit: {selectedCrop.unit}
+                    </p>
+                  )}
                 </div>
+
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Category *</label>
-                  <Select value={form.category} onValueChange={(v) => update("category", v)}>
-                    <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+                  <label className="text-sm font-medium">District *</label>
+                  <Select value={form.district} onValueChange={(v) => update("district", v)}>
+                    <SelectTrigger><SelectValue placeholder="Select district" /></SelectTrigger>
                     <SelectContent>
-                      {categories.map((c) => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                      {karnatakaDistricts.map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
+
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Quantity (Quintals) *</label>
                   <Input value={form.quantity} onChange={(e) => update("quantity", e.target.value)} type="number" min="0.1" step="0.1" placeholder="e.g. 10" />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Expected Price per Quintal (₹) *</label>
-                  <Input value={form.price} onChange={(e) => update("price", e.target.value)} type="number" min="1" placeholder="e.g. 3500" />
+              </div>
+
+              {/* Auto-filled mandi price */}
+              <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground">Krishi Mandi Price (per quintal)</p>
+                    <p className="text-sm text-muted-foreground mt-0.5">
+                      Auto-set from APMC rates for {form.district || "your district"}.
+                    </p>
+                  </div>
+                  <div className="flex items-center text-2xl font-bold text-primary">
+                    <IndianRupee className="w-5 h-5" />
+                    {mandiPrice != null ? mandiPrice.toLocaleString("en-IN") : "—"}
+                  </div>
                 </div>
+                {!form.cropId || !form.district ? (
+                  <p className="text-xs text-muted-foreground mt-2">Select a crop and district to see the price.</p>
+                ) : (
+                  <p className="text-xs text-muted-foreground mt-2">
+                    All farmers in the same district list this crop at the same fair mandi price.
+                  </p>
+                )}
               </div>
 
               <div className="border-t pt-4 mt-4">
@@ -137,15 +185,6 @@ const CreateListing = () => {
                     <Input value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="Mobile number" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">District *</label>
-                    <Select value={form.district} onValueChange={(v) => update("district", v)}>
-                      <SelectTrigger><SelectValue placeholder="Select district" /></SelectTrigger>
-                      <SelectContent>
-                        {karnatakaDistricts.map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
                     <label className="text-sm font-medium">Village/Town</label>
                     <Input value={form.village} onChange={(e) => update("village", e.target.value)} placeholder="Village or town name" />
                   </div>
@@ -157,7 +196,7 @@ const CreateListing = () => {
                 <Textarea value={form.description} onChange={(e) => update("description", e.target.value)} placeholder="Quality, harvest date, organic, etc." rows={3} />
               </div>
 
-              <Button type="submit" disabled={submitting} className="w-full" size="lg">
+              <Button type="submit" disabled={submitting || mandiPrice == null} className="w-full" size="lg">
                 {submitting ? "Creating..." : "🌾 List My Crop"}
               </Button>
             </form>
