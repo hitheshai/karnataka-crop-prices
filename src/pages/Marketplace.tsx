@@ -249,7 +249,7 @@ const Marketplace = () => {
                         <div className="space-y-4 pt-2">
                           <div className="bg-muted rounded-lg p-3 text-sm">
                             <p><strong>Seller:</strong> {listing.farmer_name} — {listing.farmer_district}</p>
-                            <p><strong>Available:</strong> {listing.quantity_quintals} Quintals @ {formatPrice(listing.expected_price_per_quintal)}/Q</p>
+                            <p><strong>Available:</strong> {listing.quantity_quintals} Quintals @ {formatPrice(priceFor(listing))}/Q</p>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Your Name *</label>
