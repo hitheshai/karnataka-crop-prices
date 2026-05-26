@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Leaf, Plus, Search, ShoppingCart, MapPin, Phone, ArrowLeft, Package, IndianRupee, User, MessageSquare } from "lucide-react";
-import { karnatakaDistricts } from "@/data/karnataka-data";
+import { karnatakaDistricts, crops } from "@/data/karnataka-data";
+import { useAPMCPrices } from "@/hooks/useAPMCPrices";
 import ScrollToTop from "@/components/ScrollToTop";
 
 interface CropListing {
