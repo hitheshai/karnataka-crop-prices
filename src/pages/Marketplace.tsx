@@ -206,8 +206,8 @@ const Marketplace = () => {
                       <Badge variant="secondary" className="mt-1">{listing.crop_category}</Badge>
                     </div>
                     <div className="text-right">
-                      <p className="text-xl font-bold text-primary">{formatPrice(listing.expected_price_per_quintal)}</p>
-                      <p className="text-xs text-muted-foreground">per quintal</p>
+                      <p className="text-xl font-bold text-primary">{formatPrice(priceFor(listing))}</p>
+                      <p className="text-xs text-muted-foreground">per quintal (mandi)</p>
                     </div>
                   </div>
                 </CardHeader>
