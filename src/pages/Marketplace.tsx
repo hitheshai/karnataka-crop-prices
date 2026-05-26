@@ -10,7 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Leaf, Plus, Search, ShoppingCart, MapPin, Phone, ArrowLeft, Package, IndianRupee, User, MessageSquare } from "lucide-react";
-import { karnatakaDistricts } from "@/data/karnataka-data";
+import { karnatakaDistricts, crops } from "@/data/karnataka-data";
+import { useAPMCPrices } from "@/hooks/useAPMCPrices";
 import ScrollToTop from "@/components/ScrollToTop";
 
 interface CropListing {
@@ -32,11 +33,22 @@ interface CropListing {
 const Marketplace = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { priceData } = useAPMCPrices();
   const [listings, setListings] = useState<CropListing[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [districtFilter, setDistrictFilter] = useState("all");
+
+  // Resolve current mandi price for a listing (live, district-uniform)
+  const getMandiPrice = (cropName: string, district: string): number | null => {
+    const crop = crops.find((c) => c.name === cropName);
+    if (!crop) return null;
+    const entry = priceData.find((p) => p.cropId === crop.id && p.district === district);
+    return entry?.modalPrice ?? null;
+  };
+  const priceFor = (l: CropListing) =>
+    getMandiPrice(l.crop_name, l.farmer_district) ?? l.expected_price_per_quintal;
 
   // Purchase dialog state
   const [selectedListing, setSelectedListing] = useState<CropListing | null>(null);
@@ -194,8 +206,8 @@ const Marketplace = () => {
                       <Badge variant="secondary" className="mt-1">{listing.crop_category}</Badge>
                     </div>
                     <div className="text-right">
-                      <p className="text-xl font-bold text-primary">{formatPrice(listing.expected_price_per_quintal)}</p>
-                      <p className="text-xs text-muted-foreground">per quintal</p>
+                      <p className="text-xl font-bold text-primary">{formatPrice(priceFor(listing))}</p>
+                      <p className="text-xs text-muted-foreground">per quintal (mandi)</p>
                     </div>
                   </div>
                 </CardHeader>
@@ -226,7 +238,7 @@ const Marketplace = () => {
                   {user && user.id !== listing.farmer_id ? (
                     <Dialog open={selectedListing?.id === listing.id} onOpenChange={(open) => !open && setSelectedListing(null)}>
                       <DialogTrigger asChild>
-                        <Button className="w-full gap-2" onClick={() => { setSelectedListing(listing); setOfferedPrice(String(listing.expected_price_per_quintal)); }}>
+                        <Button className="w-full gap-2" onClick={() => { setSelectedListing(listing); setOfferedPrice(String(priceFor(listing))); }}>
                           <ShoppingCart className="w-4 h-4" /> Send Purchase Request
                         </Button>
                       </DialogTrigger>
@@ -237,7 +249,7 @@ const Marketplace = () => {
                         <div className="space-y-4 pt-2">
                           <div className="bg-muted rounded-lg p-3 text-sm">
                             <p><strong>Seller:</strong> {listing.farmer_name} — {listing.farmer_district}</p>
-                            <p><strong>Available:</strong> {listing.quantity_quintals} Quintals @ {formatPrice(listing.expected_price_per_quintal)}/Q</p>
+                            <p><strong>Available:</strong> {listing.quantity_quintals} Quintals @ {formatPrice(priceFor(listing))}/Q</p>
                           </div>
                           <div className="space-y-2">
                             <label className="text-sm font-medium">Your Name *</label>
