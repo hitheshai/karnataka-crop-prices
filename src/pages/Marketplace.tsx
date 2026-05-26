@@ -259,8 +259,8 @@ const Marketplace = () => {
                               <Input value={purchaseQty} onChange={(e) => setPurchaseQty(e.target.value)} type="number" min="0.1" step="0.1" />
                             </div>
                             <div className="space-y-2">
-                              <label className="text-sm font-medium">Offered Price/Q *</label>
-                              <Input value={offeredPrice} onChange={(e) => setOfferedPrice(e.target.value)} type="number" min="1" />
+                              <label className="text-sm font-medium">Mandi Price/Q (fixed)</label>
+                              <Input value={offeredPrice} readOnly disabled className="bg-muted font-semibold" />
                             </div>
                           </div>
                           <div className="space-y-2">
